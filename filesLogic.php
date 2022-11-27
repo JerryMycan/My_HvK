@@ -6,28 +6,27 @@ $result = mysqli_query($conn,$sql);
 $files = mysqli_fetch_all($result,MYSQLI_ASSOC);
 
 if(isset($_POST['save'])){
-    $filename = $_FILES['myfile']['name'];
-
-    $destination = 'uploads/' . $filename;
-    $extension = pathinfo($filename,PATHINFO_EXTENSION); 
     $file = $_FILES['myfile']['tmp_name'];
     $size = $_FILES['myfile']['size'];
-    
+    $filename = $_FILES['myfile']['name'];
+    $destination = 'uploads/' . $filename;
+    $extension = pathinfo($filename,PATHINFO_EXTENSION); 
+   
     if(!in_array($extension,['zip', 'pdf', 'jpg'])){
-        echo "Your file extension must be .zip, .pdf or .jpg!";
+        echo "BITTE ausschließlich Dateien mit der Endung: .zip, .pdf .jpg hochladen!";
     }
     elseif($_FILES['myfile']['size'] > 1000000){
-        "Your file is too large!";
+        "Die Datei ist zu groß!";
     }
     else{
         if(move_uploaded_file($file, $destination)){
             $sql = "INSERT INTO files (name, size, downloads)
             VALUES('$filename', '$size', 0)";
             if(mysqli_query($conn, $sql)){
-                echo "File uploaded successfully!";
+                echo "Datei wurde erfolgreich hochgeladen!";
             }
             else{
-                echo "Failed to upload file!";
+                echo "Fehler beim Hochladen!";
             }
         }
     }
@@ -38,7 +37,7 @@ if(isset($_GET['file_id'])){
     $sql = "SELECT * FROM files WHERE id=$id";
     $result = mysqli_query($conn,$sql);
     $file = mysqli_fetch_assoc($result);
-    $filepath = 'uploads/' . $file['name'];
+    $filepath = 'uploads/' . $file['filename'];
     
     if(file_exists($filepath)){
         header('Content-type: application/octet-stream');
@@ -50,7 +49,7 @@ if(isset($_GET['file_id'])){
         header('Pragma:public');
         header('Content-Length:'. filesize('uploads/'.$file['name']));
 
-        readfile('uploads/'.$file['name']);
+        readfile('uploads/'.$file['filename']);
         $newCount = $file['downloads'] + 1;
         $updatQuery = "UPDATE files SET downloads=$newCount WHERE id=$id";
         mysqli_query($conn,$updatQuery);

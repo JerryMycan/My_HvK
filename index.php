@@ -35,12 +35,10 @@
                                 $file['id']?>">Downloads</a>
                             </td>
                         </tr>
-
                         <?php endforeach ; ?>
-                    
                     </tbody>
                 </table>
-            </div><!-- -->
+            </div>
         </div>
     </body>
 </html>
