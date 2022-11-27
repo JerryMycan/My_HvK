@@ -1,5 +1,5 @@
 <?php
-
+//Datenbankverbindung
 $conn = mysqli_connect("localhost", "root", "123456789", "file_upload");
 $sql = "SELECT * FROM files";
 $result = mysqli_query($conn,$sql);

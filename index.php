@@ -1,4 +1,4 @@
-<?php include 'filesLogic.php'; ?>
+<?php include 'filesLogic.php'; ?> <!-- Import der PHP-Logik-->
 <!DOCTYPE html>
 <html>
     <head>
